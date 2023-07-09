@@ -1,0 +1,3 @@
+type FunctionProp = {
+    setState: () => void;
+};
