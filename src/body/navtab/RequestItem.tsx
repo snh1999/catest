@@ -1,10 +1,14 @@
+import { useState } from "react";
+
 import { ListItem, ListItemIcon, ListItemText, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
-import RequestTab from "../../interfaces/Request";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useState } from "react";
+
+import { DraggableProvided } from "react-beautiful-dnd";
+
+import RequestTab from "../../interfaces/Request";
 
 const CONFIRM_TEXT = "Are you sure you want to delete?";
 
@@ -12,12 +16,13 @@ type RequestItemProp = {
     request: RequestTab;
     deleteRequest: (id: number) => void;
     updateRequest: (request: RequestTab) => void;
+    provided: DraggableProvided;
 };
 
 // todo - change the delete function -> setto false
 
 function RequestItem(props: RequestItemProp) {
-    const { request, deleteRequest, updateRequest } = props;
+    const { request, deleteRequest, updateRequest, provided } = props;
     const [isConfirmState, setConfirmState] = useState(false);
     const [isEditing, setEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(request.title);
@@ -36,7 +41,7 @@ function RequestItem(props: RequestItemProp) {
 
     if (isConfirmState) {
         return (
-            <ListItem>
+            <ListItem {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                 <IconComponent setState={toggleConfirm} isCancel={true} isDelete={false} />
                 <ListItemText primary={CONFIRM_TEXT} secondary={null} />
                 <IconComponent setState={() => deleteRequest(request.id)} isCancel={false} isDelete={false} />
@@ -44,7 +49,7 @@ function RequestItem(props: RequestItemProp) {
         );
     } else if (isEditing) {
         return (
-            <ListItem>
+            <ListItem {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                 <IconComponent setState={toggleIsEditing} isCancel={true} isDelete={false} />
                 <ListItemText style={{ paddingRight: "5px" }}>
                     <TextField
@@ -63,7 +68,12 @@ function RequestItem(props: RequestItemProp) {
         );
     } else {
         return (
-            <ListItem onDoubleClick={toggleIsEditing}>
+            <ListItem
+                onDoubleClick={toggleIsEditing}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+            >
                 <ListItemIcon>
                     <FolderIcon />
                 </ListItemIcon>

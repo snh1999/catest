@@ -36,7 +36,7 @@ function App() {
     const [requests, setRequests] = useState<RequestTab[]>([]);
 
     const addRequest = (title: string) => {
-        const newRequest: RequestTab = { title, id: Date.now() };
+        const newRequest: RequestTab = { title, id: requests.length };
         setRequests((prevState) => [...prevState, newRequest]);
     };
 
@@ -50,6 +50,14 @@ function App() {
         );
     };
 
+    const reroderRequests = (startIndex: number, endIndex: number) => {
+        setRequests((prevState) => {
+            const [dragItem] = prevState.splice(startIndex, 1);
+            prevState.splice(endIndex, 0, dragItem);
+            return prevState;
+        });
+    };
+
     return (
         <div className="container">
             <ThemeProvider theme={initialTheme}>
@@ -57,7 +65,12 @@ function App() {
                 {/* <TabContainer /> */}
                 <NavTab addRequest={addRequest} />
                 {requests && (
-                    <RequestList requests={requests} deleteRequest={deleteRequest} updateRequest={updateRequest} />
+                    <RequestList
+                        requests={requests}
+                        deleteRequest={deleteRequest}
+                        updateRequest={updateRequest}
+                        reroderRequests={reroderRequests}
+                    />
                 )}
             </ThemeProvider>
         </div>
