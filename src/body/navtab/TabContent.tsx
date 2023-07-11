@@ -29,12 +29,12 @@ function TabContent(props: TabPanelProps) {
     );
 }
 type TabPanelsProp = {
-    itemArr: RequestTab[];
+    requestArr: RequestTab[];
     activeTab: number;
 };
 
 export default function AllTabs(props: TabPanelsProp) {
-    const { itemArr, activeTab } = props;
+    const { requestArr: itemArr, activeTab } = props;
     return (
         <React.Fragment>
             {itemArr.map((item, index) => {

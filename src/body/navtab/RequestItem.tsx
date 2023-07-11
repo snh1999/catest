@@ -9,17 +9,16 @@ import { DraggableProvided } from "react-beautiful-dnd";
 
 import RequestTab from "../../common/interfaces/Request";
 
-const CONFIRM_TEXT = "Are you sure you want to delete?";
+const CONFIRM_TEXT = "Are you sure?";
 
 type RequestItemProp = {
     request: RequestTab;
     activeTab: number;
+    tabIndex: number;
+    provided: DraggableProvided;
     deleteRequest: (id: number) => void;
     updateRequest: (request: RequestTab) => void;
     handleTabChange: (index: number) => void;
-
-    provided: DraggableProvided;
-    tabIndex: number;
 };
 
 // todo - change the delete function -> setto false

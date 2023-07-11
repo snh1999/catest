@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import AddRequestField from "./AddRequest";
-import RequestList from "../../body/navtab/RequestList";
+import RequestList from "./RequestList";
 import RequestTab from "../../common/interfaces/Request";
 import { TabProps } from "../../common/interfaces/TabProps";
 
-type SideMainProps = {
-    tabProps: TabProps;
-    setRequests: React.Dispatch<React.SetStateAction<RequestTab[]>>;
+type TabsHandlerProps = {
     activeTab: number;
+    requestArr: RequestTab[];
+    handleChange: (newValue: number) => void;
+    setRequests: React.Dispatch<React.SetStateAction<RequestTab[]>>;
 };
 
-function SideMain(props: SideMainProps) {
-    const { tabProps, setRequests, activeTab } = props;
-    const requests = tabProps.requestArr;
-    const handleTabChange = tabProps.handleChange;
-    // const [requests, setRequests] = useState<RequestTab[]>([]);
+function TabsHandler(props: TabsHandlerProps) {
+    const { requestArr, setRequests, activeTab } = props;
+    const handleTabChange = props.handleChange;
 
     const addRequest = (title: string) => {
-        const newRequest: RequestTab = { title, id: requests.length };
+        const newRequest: RequestTab = { title, id: requestArr.length };
         setRequests((prevState) => [...prevState, newRequest]);
     };
 
@@ -33,13 +32,8 @@ function SideMain(props: SideMainProps) {
 
     const reroderRequests = (startIndex: number, endIndex: number) => {
         setRequests((prevState) => {
-            console.log(prevState);
             const [dragItem] = prevState.splice(startIndex, 1);
-            console.log(prevState);
-
             prevState.splice(endIndex, 0, dragItem);
-            console.log(prevState);
-
             return prevState;
         });
     };
@@ -47,18 +41,20 @@ function SideMain(props: SideMainProps) {
     return (
         <React.Fragment>
             <AddRequestField addRequest={addRequest} />
-            {requests && (
+            {requestArr && (
                 <RequestList
-                    requests={requests}
-                    activeTab={activeTab}
-                    deleteRequest={deleteRequest}
-                    updateRequest={updateRequest}
-                    reroderRequests={reroderRequests}
-                    handleTabChange={handleTabChange}
+                    {...{
+                        requests: requestArr,
+                        activeTab,
+                        deleteRequest,
+                        updateRequest,
+                        reroderRequests,
+                        handleTabChange,
+                    }}
                 />
             )}
         </React.Fragment>
     );
 }
 
-export default SideMain;
+export default TabsHandler;

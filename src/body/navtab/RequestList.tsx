@@ -7,10 +7,12 @@ import { StrictModeDroppable as Droppable } from "../../common/StrictModeDroppab
 type RequestListProp = {
     requests: RequestTab[];
     activeTab: number;
+
     deleteRequest: (id: number) => void;
     updateRequest: (request: RequestTab) => void;
-    reroderRequests: (startIndex: number, endIndex: number) => void;
     handleTabChange: (index: number) => void;
+
+    reroderRequests: (startIndex: number, endIndex: number) => void;
 };
 
 function RequestList(props: RequestListProp) {
@@ -37,14 +39,15 @@ function RequestList(props: RequestListProp) {
                             <Draggable key={request.id} draggableId={request.id.toString()} index={index}>
                                 {(provided) => (
                                     <RequestItem
-                                        provided={provided}
-                                        request={request}
-                                        activeTab={activeTab}
-                                        deleteRequest={deleteRequest}
-                                        updateRequest={updateRequest}
-                                        handleTabChange={handleTabChange}
+                                        {...{
+                                            provided,
+                                            request,
+                                            activeTab,
+                                            deleteRequest,
+                                            updateRequest,
+                                            handleTabChange,
+                                        }}
                                         tabIndex={index}
-                                        // key={request.id}
                                     />
                                 )}
                             </Draggable>
