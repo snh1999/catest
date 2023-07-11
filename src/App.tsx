@@ -2,9 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, useMediaQuery } from "@mui/material";
-import NavTab from "./body/navtab/NavTab";
-import RequestList from "./body/navtab/RequestList";
-import RequestTab from "./interfaces/Request";
+import SideMain from "./body/navtab/SideMain";
+import HideAppBar from "./common/Header";
+import PersistentDrawerLeft from "./Drawer";
 
 // Define theme settings
 const light = {
@@ -32,46 +32,15 @@ function App() {
         settheme(event.target.checked);
     };
 
-    // codes to refactor
-    const [requests, setRequests] = useState<RequestTab[]>([]);
-
-    const addRequest = (title: string) => {
-        const newRequest: RequestTab = { title, id: requests.length };
-        setRequests((prevState) => [...prevState, newRequest]);
-    };
-
-    const deleteRequest = (id: number) => {
-        setRequests((prevState) => prevState.filter((req) => req.id !== id));
-    };
-
-    const updateRequest = (newRequest: RequestTab) => {
-        setRequests((prevState) =>
-            prevState.map((req) => (req.id === newRequest.id ? { ...req, title: newRequest.title } : req))
-        );
-    };
-
-    const reroderRequests = (startIndex: number, endIndex: number) => {
-        setRequests((prevState) => {
-            const [dragItem] = prevState.splice(startIndex, 1);
-            prevState.splice(endIndex, 0, dragItem);
-            return prevState;
-        });
-    };
-
     return (
         <div className="container">
             <ThemeProvider theme={initialTheme}>
                 {/* <ThemeChangeSwitch checked={theme} onChange={handleChange} /> */}
                 {/* <TabContainer /> */}
-                <NavTab addRequest={addRequest} />
-                {requests && (
-                    <RequestList
-                        requests={requests}
-                        deleteRequest={deleteRequest}
-                        updateRequest={updateRequest}
-                        reroderRequests={reroderRequests}
-                    />
-                )}
+                {/* <HideAppBar children={<VerticalTabs />} /> */}
+                {/* <TabPanel /> */}
+                <PersistentDrawerLeft />
+                {/* <SideMain /> */}
             </ThemeProvider>
         </div>
     );

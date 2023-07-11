@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import { ListItem, ListItemIcon, ListItemText, TextField } from "@mui/material";
+import { IconButton, ListItem, ListItemIcon, ListItemText, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -8,21 +7,26 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import { DraggableProvided } from "react-beautiful-dnd";
 
-import RequestTab from "../../interfaces/Request";
+import RequestTab from "../../common/interfaces/Request";
 
 const CONFIRM_TEXT = "Are you sure you want to delete?";
 
 type RequestItemProp = {
     request: RequestTab;
+    activeTab: number;
     deleteRequest: (id: number) => void;
     updateRequest: (request: RequestTab) => void;
+    handleTabChange: (index: number) => void;
+
     provided: DraggableProvided;
+    tabIndex: number;
 };
 
 // todo - change the delete function -> setto false
 
 function RequestItem(props: RequestItemProp) {
-    const { request, deleteRequest, updateRequest, provided } = props;
+    const { request, deleteRequest, updateRequest, handleTabChange, activeTab, tabIndex, provided } = props;
+
     const [isConfirmState, setConfirmState] = useState(false);
     const [isEditing, setEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(request.title);
@@ -61,6 +65,7 @@ function RequestItem(props: RequestItemProp) {
                         variant="standard"
                         required
                         fullWidth
+                        sx={{ width: "80%" }}
                     />
                 </ListItemText>
                 <IconComponent setState={completeEdit} isCancel={false} isDelete={false} />
@@ -73,12 +78,20 @@ function RequestItem(props: RequestItemProp) {
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
+                selected={tabIndex == activeTab}
+                onClick={() => handleTabChange(tabIndex)}
+                // on click, tabindex = setactivetab
+                secondaryAction={
+                    <IconButton edge="end" onClick={toggleConfirm}>
+                        <DeleteIcon />
+                    </IconButton>
+                }
             >
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "0px", paddingRight: "10px" }}>
                     <FolderIcon />
                 </ListItemIcon>
                 <ListItemText primary={request.title} secondary={null} />
-                <IconComponent setState={toggleConfirm} isCancel={false} isDelete={true} />
+                {/* <IconComponent setState={toggleConfirm} isCancel={false} isDelete={true} /> */}
             </ListItem>
         );
     }
@@ -93,7 +106,7 @@ type IconComponentProp = {
 function IconComponent(prop: IconComponentProp) {
     const { setState, isCancel, isDelete } = prop;
     return (
-        <ListItemIcon onClick={setState}>
+        <ListItemIcon onClick={setState} sx={{ minWidth: "0px", paddingRight: "7px" }}>
             {isDelete ? (
                 <DeleteIcon />
             ) : isCancel ? (
