@@ -7,24 +7,26 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import { DraggableProvided } from "react-beautiful-dnd";
 
-import RequestTab from "../../common/interfaces/Request";
+import RequestTab from "../../common/interfaces/RequestTab";
 
 const CONFIRM_TEXT = "Are you sure?";
 
 type RequestItemProp = {
-    request: RequestTab;
-    activeTab: number;
     tabIndex: number;
     provided: DraggableProvided;
+
+    request: RequestTab;
     deleteRequest: (id: number) => void;
     updateRequest: (request: RequestTab) => void;
-    handleTabChange: (index: number) => void;
+
+    activeTab: number;
+    setActiveTab: (index: number) => void;
 };
 
 // todo - change the delete function -> setto false
 
 function RequestItem(props: RequestItemProp) {
-    const { request, deleteRequest, updateRequest, handleTabChange, activeTab, tabIndex, provided } = props;
+    const { request, deleteRequest, updateRequest, setActiveTab, activeTab, tabIndex, provided } = props;
 
     const [isConfirmState, setConfirmState] = useState(false);
     const [isEditing, setEditing] = useState(false);
@@ -78,11 +80,10 @@ function RequestItem(props: RequestItemProp) {
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
                 selected={tabIndex == activeTab}
-                onClick={() => handleTabChange(tabIndex)}
-                // on click, tabindex = setactivetab
+                onClick={() => setActiveTab(tabIndex)}
                 secondaryAction={
                     <IconButton edge="end" onClick={toggleConfirm}>
-                        <DeleteIcon />
+                        <DeleteIcon color="warning" />
                     </IconButton>
                 }
             >

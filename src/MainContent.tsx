@@ -1,19 +1,19 @@
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import TabsHandler from "./body/navtab/TabsHandler";
-import AllTabs from "./body/navtab/TabContent";
+import TabsHandler from "./mainContent/navtab/TabsHandler";
 import HeaderComponent from "./common/Header";
 import { useState } from "react";
-import { TabProps } from "./common/interfaces/TabProps";
-import RequestTab from "./common/interfaces/Request";
+import RequestTab from "./common/interfaces/RequestTab";
 import ToggleSwitch from "./components/custom-toggle";
+import RequestForm from "./mainContent/body/Requestform";
+import AllTabs from "./mainContent/navtab/TabContent";
+import RequestDataProvider from "./common/context/RequestContext";
 
-export const drawerWidth = 240;
+export const drawerWidth = 250;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     open?: boolean;
@@ -46,10 +46,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 type MainContentProps = {
     handleThemeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     darkTheme: boolean;
+    toggleDrawerOpen?: () => void;
 };
 
 export default function MainContent(props: MainContentProps) {
-    const theme = useTheme();
+    // const theme = useTheme();
     const [open, setOpen] = useState(true);
 
     const toggleDrawerOpen = () => {
@@ -57,12 +58,8 @@ export default function MainContent(props: MainContentProps) {
     };
 
     // added code
-    const [requestArr, setRequests] = useState<RequestTab[]>([]);
-
+    const [requestTabs, setRequestTabs] = useState<RequestTab[]>([]);
     const [activeTab, setActiveTab] = useState(0);
-    const handleChange = (newValue: number) => {
-        setActiveTab(newValue);
-    };
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -81,26 +78,41 @@ export default function MainContent(props: MainContentProps) {
                 anchor="left"
                 open={open}
             >
-                <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <ToggleSwitch checked={props.darkTheme} onChange={(event) => props.handleThemeChange(event)} />
-                    Requests
-                    <IconButton onClick={toggleDrawerOpen}>
-                        {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                {/* <Divider /> */}
+                <DrawerHeaderComponent {...props} toggleDrawerOpen={toggleDrawerOpen} />
                 <TabsHandler
                     {...{
-                        requestArr,
-                        handleChange,
+                        requestTabs,
+                        setActiveTab,
                         activeTab,
-                        setRequests,
+                        setRequestTabs: setRequestTabs,
                     }}
                 />
             </Drawer>
-            <Main open={open}>
-                <AllTabs activeTab={activeTab} requestArr={requestArr} />
+            <Main
+                open={open}
+                sx={{
+                    maxWidth: "900px",
+                    margin: "0 auto 0 auto",
+                }}
+            >
+                <RequestDataProvider>
+                    <RequestForm />
+                </RequestDataProvider>
+                {/* <AllTabs activeTab={activeTab} requestArr={requestArr} /> */}
             </Main>
         </Box>
+    );
+}
+
+function DrawerHeaderComponent(props: MainContentProps) {
+    return (
+        <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
+            <ToggleSwitch checked={props.darkTheme} onChange={(event) => props.handleThemeChange(event)} />
+            Requests
+            <IconButton onClick={props.toggleDrawerOpen}>
+                <ChevronLeftIcon />
+                {/* {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
+            </IconButton>
+        </DrawerHeader>
     );
 }

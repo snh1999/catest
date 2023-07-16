@@ -1,7 +1,8 @@
-import { IconButton, Toolbar, Typography, styled } from "@mui/material";
+import { Avatar, IconButton, Toolbar, Typography, styled } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { drawerWidth } from "../MainContent";
 import MenuIcon from "@mui/icons-material/Menu";
+import logo from "../assets/logo.png";
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -32,7 +33,7 @@ type HeaderComponentProps = {
 export default function HeaderComponent(props: HeaderComponentProps) {
     const { toggleDrawerOpen, open } = props;
     return (
-        <AppBar position="fixed" open={open}>
+        <AppBar position="absolute" open={open}>
             <Toolbar>
                 <IconButton
                     color="inherit"
@@ -43,8 +44,27 @@ export default function HeaderComponent(props: HeaderComponentProps) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                    Persistent drawer
+
+                {/* <AdbIcon sx={{ mr: 1 }} /> */}
+                <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{
+                        mr: "auto",
+                        ml: "auto",
+                        // display: { xs: "none", md: "flex" },
+                        fontFamily: "monospace",
+                        fontWeight: 700,
+                        letterSpacing: ".3rem",
+                        color: "inherit",
+                        textDecoration: "none",
+                    }}
+                >
+                    <IconButton disabled>
+                        <Avatar alt="catest" src={logo} sx={{ mr: 1 }} variant="rounded" />
+                    </IconButton>
+                    Catest
                 </Typography>
             </Toolbar>
         </AppBar>
