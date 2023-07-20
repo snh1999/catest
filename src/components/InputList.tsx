@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Checkbox, IconButton, List, ListItem, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, IconButton, List, ListItem, TextField, Typography } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DEFAULT_KEY_VALUE, KeyValue } from "../common/interfaces/KeyValue";
@@ -50,6 +50,7 @@ function NewKeyValueRow(props: RowProp) {
             <Checkbox edge="end" onChange={(_) => toggleChecked()} checked={checked} />
             <TextField
                 value={key}
+                placeholder="Key"
                 onChange={(event) => setKey(event.target.value)}
                 onBlur={() => {
                     updateRow(index, true, key);
@@ -64,6 +65,7 @@ function NewKeyValueRow(props: RowProp) {
 
             <TextField
                 value={value}
+                placeholder="Value"
                 onChange={(event) => setValue(event.target.value)}
                 onBlur={() => {
                     updateRow(index, false, value);
@@ -72,20 +74,18 @@ function NewKeyValueRow(props: RowProp) {
                 size="small"
             />
             <IconButton onClick={() => removeRow(index)}>
-                <DeleteIcon />
+                <DeleteIcon color="warning" />
             </IconButton>
         </ListItem>
     );
 }
 
 type InputProps = {
-    title: string;
     rows: KeyValue[];
     setRow: React.Dispatch<React.SetStateAction<KeyValue[]>>;
 };
 
 function InputList(props: InputProps) {
-    // const [rows, setRow] = useState<KeyValue[]>([DEFAULT_KEY_VALUE]);
     const { rows, setRow } = props;
 
     function addNewRow() {
@@ -98,20 +98,23 @@ function InputList(props: InputProps) {
     return (
         <React.Fragment>
             <List sx={{ width: "100%", bgcolor: "background.paper", padding: "0px" }}>
-                <ListItem>
-                    <Typography sx={{ textAlign: "left" }}>{props.title}</Typography>
-                </ListItem>
-                <ListItem sx={{ padding: "0px" }}>
-                    <Typography sx={{ width: "45%", textAlign: "right" }}>Key</Typography>
-                    <Typography sx={{ width: "45%", textAlign: "right" }}>Value</Typography>
-                </ListItem>
                 {rows.map((value, index) => (
                     <NewKeyValueRow key={index} index={index} rows={rows} setRow={setRow} />
                 ))}
+                {/* <ListItem>
+                    <Button
+                        // size="small"
+                        onClick={addNewRow}
+                        color="inherit"
+                        endIcon={<AddBoxIcon />}
+                    >
+                        Add Row
+                    </Button>
+                </ListItem> */}
+                <IconButton onClick={addNewRow}>
+                    <AddBoxIcon />
+                </IconButton>
             </List>
-            <IconButton onClick={addNewRow}>
-                <AddBoxIcon />
-            </IconButton>
         </React.Fragment>
     );
 }

@@ -10,8 +10,8 @@ import { useState } from "react";
 import RequestTab from "./common/interfaces/RequestTab";
 import ToggleSwitch from "./components/custom-toggle";
 import RequestForm from "./mainContent/body/Requestform";
-import AllTabs from "./mainContent/navtab/TabContent";
 import RequestDataProvider from "./common/context/RequestContext";
+import ResponseDataProvider from "./common/context/ResponseContext";
 
 export const drawerWidth = 250;
 
@@ -50,7 +50,6 @@ type MainContentProps = {
 };
 
 export default function MainContent(props: MainContentProps) {
-    // const theme = useTheme();
     const [open, setOpen] = useState(true);
 
     const toggleDrawerOpen = () => {
@@ -96,7 +95,9 @@ export default function MainContent(props: MainContentProps) {
                 }}
             >
                 <RequestDataProvider>
-                    <RequestForm />
+                    <ResponseDataProvider>
+                        <RequestForm />
+                    </ResponseDataProvider>
                 </RequestDataProvider>
                 {/* <AllTabs activeTab={activeTab} requestArr={requestArr} /> */}
             </Main>
