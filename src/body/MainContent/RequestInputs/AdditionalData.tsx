@@ -3,12 +3,13 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import TabPanel from "../../../common/TabPanel";
-import KeyValueInput from "./KeyValueInput";
+import KeyValueInput from "./AdditionalData/KeyValueInput";
 import useActiveRequestStore from "../../../ts/store/activeRequestStore";
-import JSONInput from "./JsonInput";
+import JSONInput from "./AdditionalData/JsonInput";
 import SavedResponseViewer from "./SavedResponseViewer";
+import FormInput from "./AdditionalData/FormInput";
 
-export default function AdditionalInputs() {
+export default function AdditionalData() {
     const { paramData, setParamData, headerData, setHeaderData, savedResponses } = useActiveRequestStore((store) => ({
         paramData: store.paramData,
         setParamData: store.setParamData,
@@ -25,9 +26,9 @@ export default function AdditionalInputs() {
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Params" key={0} />
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Headers" key={1} />
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Body" key={2} />
-                <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Form" key={4} />
+                <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Form" key={3} />
                 {savedResponses.length && (
-                    <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Saved Responses" key={5} />
+                    <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Saved Responses" key={4} />
                 )}
             </Tabs>
             <TabPanel value={activeTab} index={0}>
@@ -40,11 +41,11 @@ export default function AdditionalInputs() {
                 <JSONInput />
             </TabPanel>
 
-            <TabPanel value={activeTab} index={4}>
-                <JSONInput />
+            <TabPanel value={activeTab} index={3}>
+                <FormInput />
             </TabPanel>
             {savedResponses.length != 0 && (
-                <TabPanel value={activeTab} index={5}>
+                <TabPanel value={activeTab} index={4}>
                     {savedResponses.map((responseObject, index) => (
                         <SavedResponseViewer responseObject={responseObject} key={index} />
                     ))}

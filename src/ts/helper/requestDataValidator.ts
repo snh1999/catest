@@ -1,6 +1,5 @@
-// import { URL } from "url";
-
-import { KeyValue } from "../types/requestInput";
+import { KeyValue } from "../types/keyvalue";
+import { ProcessedRequestData } from "../types/response";
 
 export function checkURL(url: string) {
     let urlObj: URL;
@@ -42,6 +41,32 @@ export function getKeyValue(inputArr: KeyValue[]) {
     if (isError) return false;
 
     return keyValueObj;
+}
+
+export function checkAll(
+    headerData: KeyValue[],
+    paramData: KeyValue[],
+    requestBody: string
+): undefined | ProcessedRequestData {
+    let params: Record<string, string> = {};
+    let header: Record<string, string> = {};
+    let bodyObj: Record<any, any> = {};
+
+    let temp = getKeyValue(headerData);
+    if (typeof temp == "boolean") return;
+    else header = temp;
+
+    temp = getKeyValue(paramData);
+    if (typeof temp == "boolean") return;
+    else params = temp;
+
+    try {
+        if (requestBody !== "") bodyObj = JSON.parse(requestBody);
+    } catch (error) {
+        return;
+    }
+
+    return { params, header, bodyObj };
 }
 
 function getDuplicateKeyError(inputArr: KeyValue[]) {

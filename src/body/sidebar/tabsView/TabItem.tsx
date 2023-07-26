@@ -94,7 +94,7 @@ function TabItem(props: TabProps) {
                 }}
                 secondaryAction={
                     <IconButton sx={{ cursor: "context-menu" }} edge="end" onClick={toggleConfirm}>
-                        <DeleteIcon color="warning" />
+                        <DeleteIcon color="error" />
                     </IconButton>
                 }
             >
@@ -118,13 +118,7 @@ function IconComponent(prop: IconComponentProp) {
     const { setState, isCancel, isDelete } = prop;
     return (
         <ListItemIcon onClick={setState} sx={{ minWidth: "0px", paddingRight: "7px", cursor: "context-menu" }}>
-            {isDelete ? (
-                <DeleteIcon />
-            ) : isCancel ? (
-                <CancelIcon color="warning" />
-            ) : (
-                <CheckCircleIcon color="success" />
-            )}
+            {isDelete ? <DeleteIcon /> : isCancel ? <CancelIcon color="error" /> : <CheckCircleIcon color="success" />}
         </ListItemIcon>
     );
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Checkbox, IconButton, List, ListItem, TextField } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { DEFAULT_KEY_VALUE, KeyValue } from "../../../ts/types/keyvalue";
+import { DEFAULT_KEY_VALUE, KeyValue } from "../../../../ts/types/keyvalue";
 
 type RowProp = {
     index: number;

@@ -1,6 +1,6 @@
 import { Box, Divider } from "@mui/material";
 import RequestBasicInputs from "./RequestInputs/RequestBasicInputs";
-import AdditionalInputs from "./RequestInputs/AdditionalInputs";
+import AdditionalData from "./RequestInputs/AdditionalData";
 import ActiveResponseViewer from "./ResponseData/ActiveResponseViewer";
 
 export default function RequestResponseBody() {
@@ -8,7 +8,7 @@ export default function RequestResponseBody() {
         <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
             <Box sx={{ flex: "1 1 40%" }}>
                 <RequestBasicInputs />
-                <AdditionalInputs />
+                <AdditionalData />
             </Box>
             <Divider />
 

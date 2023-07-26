@@ -1,10 +1,10 @@
 import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
 
-export default function HeaderTab({ responseHeader }: { responseHeader: Record<string, string> }) {
+export default function RecordTableViewer({ recordObject }: { recordObject: Record<string, string> }) {
     return (
         <TableContainer>
             <Table sx={{ width: "100%", padding: "0px" }}>
-                {Object.entries(responseHeader).map(([key, value]) => (
+                {Object.entries(recordObject).map(([key, value]) => (
                     <>
                         <TableRow key={key}>
                             <TableCell

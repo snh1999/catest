@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { json } from "@codemirror/lang-json";
 import BackspaceIcon from "@mui/icons-material/Backspace";
-import useActiveRequestStore from "../../../ts/store/activeRequestStore";
+import useActiveRequestStore from "../../../../ts/store/activeRequestStore";
 
 function JSONInput() {
     const setRequestBody = useActiveRequestStore((store) => store.setRequestBody);

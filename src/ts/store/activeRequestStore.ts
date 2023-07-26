@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { DEFAULT_KEY_VALUE, KeyValue } from "../types/keyvalue";
 import { RequestBasic } from "../types/requesttypes";
-import { checkURL, getKeyValue } from "../helper/requestDataValidator";
+import { checkAll, checkURL, getKeyValue } from "../helper/requestDataValidator";
 import { sendHttpRequest } from "../helper/request";
 import { Response } from "@tauri-apps/api/http";
 import { ResponseObject, DEFAULT_RESPONSE_OBJECT } from "../types/response";
@@ -32,7 +32,6 @@ interface ActiveRequestState {
 
     sendRequest: () => Promise<string | Response<any> | Error>;
 }
-// updateState(get().inputData[get().requestTabs[get().activeTab].id]);
 
 const useActiveRequestStore = create<ActiveRequestState>()(
     persist(
@@ -55,6 +54,7 @@ const useActiveRequestStore = create<ActiveRequestState>()(
                         responseStats: response.status.toString(),
                         timetaken: (Date.now() - startTime).toString(),
                         size: response.headers["content-length"] ? response.headers["content-length"] : "...",
+                        requestData: checkAll(get().headerData, get().paramData, get().requestBody),
                     },
                 }),
             cleanResponseObject: () => set({ responseObject: DEFAULT_RESPONSE_OBJECT }),

@@ -1,9 +1,10 @@
 import { Badge, Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TabPanel from "../../../common/TabPanel";
-import HeaderTab from "./ResponseHeader";
-import ResponseBody from "./ResponseBody";
+
+import JsonView from "../../../common/JsonView";
 import { ResponseObject } from "../../../ts/types/response";
+import RecordTableViewer from "../../../common/RecordTableViewer";
 
 export default function ResponseViewer({ responseObject }: { responseObject: ResponseObject }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -28,10 +29,10 @@ export default function ResponseViewer({ responseObject }: { responseObject: Res
                     />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}>
-                    <ResponseBody response={response} />
+                    <JsonView jsonString={response} />
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
-                    <HeaderTab responseHeader={responseObject.header} />
+                    <RecordTableViewer recordObject={responseObject.header} />
                 </TabPanel>
             </Box>
         );

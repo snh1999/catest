@@ -1,18 +1,18 @@
 import { Badge, Box } from "@mui/material";
-import CopyToolTip from "../../../common/CopyToolTip";
+import CopyToolTip from "./CopyToolTip";
 import CodeMirror from "@uiw/react-codemirror";
 import { json } from "@codemirror/lang-json";
 
-export default function ResponseBody({ response }: { response: string }) {
+export default function JsonView({ jsonString }: { jsonString: string }) {
     return (
         <Box sx={{ textAlign: "left" }}>
             <Badge
                 sx={{ width: "100%" }}
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                badgeContent={<CopyToolTip text={response} />}
+                badgeContent={<CopyToolTip text={jsonString} />}
             >
                 <CodeMirror
-                    value={response}
+                    value={jsonString}
                     maxHeight="400px"
                     style={{ width: "100%" }}
                     extensions={[json()]}
