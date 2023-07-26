@@ -25,8 +25,9 @@ export default function AdditionalInputs() {
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Params" key={0} />
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Headers" key={1} />
                 <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Body" key={2} />
+                <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Form" key={4} />
                 {savedResponses.length && (
-                    <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Saved Responses" key={3} />
+                    <Tab sx={{ fontSize: "0.9rem", fontWeight: "bold" }} label="Saved Responses" key={5} />
                 )}
             </Tabs>
             <TabPanel value={activeTab} index={0}>
@@ -38,8 +39,12 @@ export default function AdditionalInputs() {
             <TabPanel value={activeTab} index={2}>
                 <JSONInput />
             </TabPanel>
+
+            <TabPanel value={activeTab} index={4}>
+                <JSONInput />
+            </TabPanel>
             {savedResponses.length != 0 && (
-                <TabPanel value={activeTab} index={3}>
+                <TabPanel value={activeTab} index={5}>
                     {savedResponses.map((responseObject, index) => (
                         <SavedResponseViewer responseObject={responseObject} key={index} />
                     ))}
