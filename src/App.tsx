@@ -1,39 +1,19 @@
-import { useState } from "react";
-import "./App.css";
-import { ThemeProvider } from "@emotion/react";
-import { createTheme, useMediaQuery } from "@mui/material";
-import MainContent from "./MainContent";
-
-// Define theme settings
-const light = {
-    palette: {
-        mode: "light",
-    },
-};
-
-const dark = {
-    palette: {
-        mode: "dark",
-    },
-};
+import { ThemeProvider, createTheme } from "@mui/material";
+import MainBody from "./body/MainBody";
+import useThemeStore from "./ts/store/themestore";
 
 function App() {
-    // code for theme
-    const preferedMode = useMediaQuery("(prefers-color-scheme: dark)");
-    const [darkTheme, settheme] = useState(preferedMode);
+    const isDarkTheme = useThemeStore((state) => state.isDarkTheme);
     const initialTheme = createTheme({
         palette: {
-            mode: darkTheme ? "dark" : "light",
+            mode: isDarkTheme ? "dark" : "light",
         },
     });
-    const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        settheme(event.target.checked);
-    };
 
     return (
         <div className="container">
             <ThemeProvider theme={initialTheme}>
-                <MainContent handleThemeChange={handleThemeChange} darkTheme={darkTheme} />
+                <MainBody />
             </ThemeProvider>
         </div>
     );
