@@ -9,10 +9,9 @@ import { useState } from "react";
 import useActiveRequestStore from "../../ts/store/activeRequestStore";
 import useRequestTabStore from "../../ts/store/requestTabStore";
 import generateDocumentationFromRequest from "../../ts/helper/documentationGenerator";
+import DocViewer from "../DocViewer/DocViewer";
 
 function SideBar() {
-    const inputData = useRequestTabStore((store) => store.inputData);
-    console.log(inputData);
     return (
         <>
             <AddRequest />
@@ -24,9 +23,11 @@ function SideBar() {
 
 function BottomButtons() {
     const [open, setOpen] = useState(false);
+    const [viewDoc, setViewDoc] = useState(false);
     const getState = useActiveRequestStore((store) => store.getState);
     const updateInputData = useRequestTabStore((store) => store.updateInputData);
     const getStateVariables = useRequestTabStore((store) => store.getStateVariables);
+    const [documentation, setDocumentation] = useState("");
 
     function generateDocumentation() {
         const { title: requestTabs, info } = getStateVariables();
@@ -36,11 +37,13 @@ function BottomButtons() {
             const requestInfo = info[requestTab.id];
             documentationString = documentationString + generateDocumentationFromRequest(requestTab.title, requestInfo);
         });
-        console.log(documentationString);
+        setDocumentation(documentationString);
+        setViewDoc(true);
     }
 
     return (
         <>
+            <DocViewer open={viewDoc} setOpen={setViewDoc} documentation={documentation} />
             <BottomNavigation showLabels sx={{ position: "fixed", bottom: 0, width: `${drawerWidth}px` }}>
                 <BottomNavigationAction
                     onClick={() => updateInputData(getState())}

@@ -6,11 +6,6 @@ interface AppThemeState {
     toggleTheme: () => void;
 }
 
-// const useThemeStore = create<AppThemeState>()((set) => ({
-//     isDarkTheme: true,
-//     toggleTheme: () => set((state) => ({ isDarkTheme: !state.isDarkTheme })),
-// }));
-
 const useThemeStore = create<AppThemeState>()(
     persist(
         (set) => ({

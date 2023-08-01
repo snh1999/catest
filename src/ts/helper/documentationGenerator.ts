@@ -50,19 +50,19 @@ export default function generateDocumentationFromRequest(title: string, inputDat
     return generateRequestDocumentation(requestData);
 }
 function generateRequestDocumentation(requestData: RequestData): string {
-    const template = `# Request Documentation: ${requestData.name}
+    const template = `## Request Documentation: ${requestData.name}
   
-  ## Description
+  ### Description
   
   ${requestData.description}
   
-  ## Endpoint
+  ### Endpoint
   
   ${requestData.method} ${requestData.endpoint}
   
   ${
       requestData.headers.length > 0
-          ? `## Headers
+          ? `### Headers
 
   | Header     | Value            | Description               |
   | ---------- | ---------------- | ------------------------- |
@@ -73,7 +73,7 @@ function generateRequestDocumentation(requestData: RequestData): string {
 
   ${
       requestData.headers.length > 0
-          ? `## Parameters
+          ? `### Parameters
 
           | Parameter     | Type               | Description                  |
           | ------------- | ------------------ |  ---------------------------- |
@@ -89,7 +89,7 @@ function generateRequestDocumentation(requestData: RequestData): string {
   
   ${
       requestData.requestBody
-          ? "## Request Body\n\n```json\n" + JSON.stringify(JSON.parse(requestData.requestBody), null, 2) + "\n```"
+          ? "### Request Body\n\n```json\n" + JSON.stringify(JSON.parse(requestData.requestBody), null, 2) + "\n```"
           : ""
   }
   
@@ -106,7 +106,7 @@ function generateExampleResponseTable(exampleResponse: ExampleResponse): string 
     const headersTable =
         exampleResponse.headers && Object.keys(exampleResponse.headers).length > 0
             ? `
-  ## Responses
+  ### Responses
 
   | Header       | Value                 |
   | ------------ | --------------------- |
@@ -128,7 +128,7 @@ function generateExampleResponseTable(exampleResponse: ExampleResponse): string 
             : "";
 
     return `
-  ### Example Response
+  #### Example Response
   
   ${headersTable ? "#### Headers\n" + headersTable : ""}
   
@@ -139,16 +139,15 @@ function generateExampleResponseTable(exampleResponse: ExampleResponse): string 
           ? "#### Request Body\n" + "```json\n" + JSON.stringify(exampleResponse.reqBody, null, 2) + "\n```"
           : ""
   }
+  ##### Status
   
-  #### Response Body
+  ${exampleResponse.status}
+
+  ##### Response Body
   
   \`\`\`json
   ${JSON.stringify(exampleResponse.resBody, null, 2)}
   \`\`\`
-  
-  #### Status
-  
-  ${exampleResponse.status}
   `;
 }
 
