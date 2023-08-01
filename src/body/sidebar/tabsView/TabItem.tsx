@@ -31,6 +31,8 @@ function TabItem(props: TabProps) {
     const [isEditing, setEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(requestTab.title);
 
+    console.log(isConfirmState, requestTab);
+
     function toggleConfirm() {
         setConfirmState(!isConfirmState);
     }
@@ -52,6 +54,7 @@ function TabItem(props: TabProps) {
                         if (activeTab === tabIndex) {
                             setActiveTab(0);
                             updateState();
+                            toggleConfirm();
                         }
                         deleteRequest(requestTab.id);
                     }}

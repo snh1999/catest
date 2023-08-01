@@ -4,7 +4,7 @@ import { DEFAULT_REQUEST_BASIC } from "./requesttypes";
 import { KeyValue, DEFAULT_KEY_VALUE } from "./keyvalue";
 
 export type RequestInputData = {
-    id: number;
+    // id: number;
     requestBasicInfo: RequestBasic;
     paramData: KeyValue[];
     headerData: KeyValue[];

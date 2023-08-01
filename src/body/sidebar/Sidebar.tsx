@@ -8,6 +8,7 @@ import { drawerWidth } from "../MainBody";
 import { useState } from "react";
 import useActiveRequestStore from "../../ts/store/activeRequestStore";
 import useRequestTabStore from "../../ts/store/requestTabStore";
+import generateDocumentationFromRequest from "../../ts/helper/documentationGenerator";
 
 function SideBar() {
     const inputData = useRequestTabStore((store) => store.inputData);
@@ -25,6 +26,18 @@ function BottomButtons() {
     const [open, setOpen] = useState(false);
     const getState = useActiveRequestStore((store) => store.getState);
     const updateInputData = useRequestTabStore((store) => store.updateInputData);
+    const getStateVariables = useRequestTabStore((store) => store.getStateVariables);
+
+    function generateDocumentation() {
+        const { title: requestTabs, info } = getStateVariables();
+        let documentationString = "";
+
+        requestTabs.forEach((requestTab) => {
+            const requestInfo = info[requestTab.id];
+            documentationString = documentationString + generateDocumentationFromRequest(requestTab.title, requestInfo);
+        });
+        console.log(documentationString);
+    }
 
     return (
         <>
@@ -34,7 +47,11 @@ function BottomButtons() {
                     label="Save"
                     icon={<SaveIcon color="success" />}
                 />
-                <BottomNavigationAction label="Export(MD)" icon={<FileDownloadIcon color="success" />} />
+                <BottomNavigationAction
+                    onClick={() => generateDocumentation()}
+                    label="Export(MD)"
+                    icon={<FileDownloadIcon color="success" />}
+                />
                 <BottomNavigationAction
                     onClick={() => setOpen(true)}
                     label="clear"

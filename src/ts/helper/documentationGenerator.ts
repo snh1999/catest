@@ -1,3 +1,7 @@
+import { KeyValue } from "../types/keyvalue";
+import { RequestInputData } from "../types/requestInput";
+import { ResponseObject } from "../types/response";
+
 interface Header {
     name: string;
     value: string;
@@ -7,19 +11,15 @@ interface Header {
 interface Parameter {
     name: string;
     type: string;
-    required: "Yes" | "No";
     description: string;
 }
 
-interface StatusCode {
-    code: number;
-    meaning: string;
-}
-
-interface Error {
-    statusCode: number;
-    errorCode: string;
-    meaning: string;
+interface ExampleResponse {
+    headers: Record<string, string> | undefined;
+    params: Record<string, string> | undefined;
+    reqBody: any | undefined;
+    resBody: any;
+    status: string;
 }
 
 interface RequestData {
@@ -29,13 +29,26 @@ interface RequestData {
     endpoint: string;
     headers: Header[];
     parameters: Parameter[];
-    requestBody?: object;
-    exampleRequest: string;
-    response: object;
-    statusCodes: StatusCode[];
-    errors: Error[];
+    requestBody?: any;
+    responses: ExampleResponse[];
 }
 
+export default function generateDocumentationFromRequest(title: string, inputData: RequestInputData) {
+    const { headerData, paramData, requestBasicInfo, requestBody, savedResponses } = inputData;
+
+    const requestData: RequestData = {
+        name: title,
+        description: "This is placeholder documentation.",
+        method: String(requestBasicInfo.type),
+        endpoint: requestBasicInfo.url,
+        headers: keyValueToHeader(headerData),
+        parameters: keyValueToParams(paramData),
+        requestBody: requestBody,
+        responses: convertSavedResponse(savedResponses),
+    };
+
+    return generateRequestDocumentation(requestData);
+}
 function generateRequestDocumentation(requestData: RequestData): string {
     const template = `# Request Documentation: ${requestData.name}
   
@@ -47,88 +60,134 @@ function generateRequestDocumentation(requestData: RequestData): string {
   
   ${requestData.method} ${requestData.endpoint}
   
-  ## Headers
-  
-  ${requestData.headers.length === 0 ? "None" : ""}
-  
+  ${
+      requestData.headers.length > 0
+          ? `## Headers
+
   | Header     | Value            | Description               |
   | ---------- | ---------------- | ------------------------- |
   ${requestData.headers.map((header) => `| ${header.name} | ${header.value} | ${header.description} |`).join("\n")}
+  `
+          : ""
+  }
+
+  ${
+      requestData.headers.length > 0
+          ? `## Parameters
+
+          | Parameter     | Type               | Description                  |
+          | ------------- | ------------------ |  ---------------------------- |
+          ${requestData.parameters
+              .map((param) => `| ${param.name} | ${param.type} | ${param.description} |`)
+              .join("\n")}
+          `
+          : ""
+  }
   
-  ## Parameters
+
   
-  ${requestData.parameters.length === 0 ? "None" : ""}
   
-  | Parameter     | Type               | Required | Description                  |
-  | ------------- | ------------------ | -------- | ---------------------------- |
-  ${requestData.parameters
-      .map((param) => `| ${param.name} | ${param.type} | ${param.required} | ${param.description} |`)
-      .join("\n")}
+  ${
+      requestData.requestBody
+          ? "## Request Body\n\n```json\n" + JSON.stringify(JSON.parse(requestData.requestBody), null, 2) + "\n```"
+          : ""
+  }
   
-  ## Request Body (if applicable)
   
-  ${requestData.requestBody ? "```json\n" + JSON.stringify(requestData.requestBody, null, 2) + "\n```" : "None"}
   
-  ## Example Request
+  ${requestData.responses.map(generateExampleResponseTable).join("\n")}
   
-  \`\`\`
-  ${requestData.exampleRequest}
-  \`\`\`
-  
-  ## Response
-  
-  \`\`\`json
-  ${JSON.stringify(requestData.response, null, 2)}
-  \`\`\`
-  
-  Status Codes
-  
-  ${requestData.statusCodes.map((statusCode) => `${statusCode.code} ${statusCode.meaning}`).join("\n")}
-  
-  Errors
-  
-  ${requestData.errors.map((error) => `${error.statusCode} ${error.errorCode} ${error.meaning}`).join("\n")}
   `;
 
     return template;
 }
 
-//   // Example input data
-//   const requestData: RequestData = {
-//     name: "Example Request",
-//     description: "This is an example request for documentation generation.",
-//     method: "GET",
-//     endpoint: "/api/example",
-//     headers: [
-//       { name: "Authorization", value: "Bearer token", description: "Authentication token" },
-//       { name: "Content-Type", value: "application/json", description: "Request content type" },
-//     ],
-//     parameters: [
-//       { name: "id", type: "string", required: "Yes", description: "ID of the item" },
-//       { name: "page", type: "number", required: "No", description: "Page number for pagination" },
-//     ],
-//     requestBody: {
-//       property1: "value1",
-//       property2: "value2",
-//     },
-//     exampleRequest:
-//       'curl -X GET "/api/example?id=12345" -H "Authorization: Bearer token" -H "Content-Type: application/json"',
-//     response: {
-//       status: 200,
-//       data: {
-//         property1: "value1",
-//         property2: "value2",
-//       },
-//     },
-//     statusCodes: [
-//       { code: 200, meaning: "OK" },
-//       { code: 400, meaning: "Bad Request" },
-//     ],
-//     errors: [
-//       { statusCode: 400, errorCode: "ERR-001", meaning: "Invalid Request" },
-//       { statusCode: 401, errorCode: "ERR-002", meaning: "Unauthorized" },
-//     ],
-//   };
+function generateExampleResponseTable(exampleResponse: ExampleResponse): string {
+    const headersTable =
+        exampleResponse.headers && Object.keys(exampleResponse.headers).length > 0
+            ? `
+  ## Responses
 
-//   const documentation = generateRequestDocumentation(requestData);
-//   console.log(documentation);
+  | Header       | Value                 |
+  | ------------ | --------------------- |
+  ${Object.entries(exampleResponse.headers)
+      .map(([name, value]) => `| ${name} | ${value} |`)
+      .join("\n")}
+  `
+            : "";
+
+    const paramsTable =
+        exampleResponse.params && Object.keys(exampleResponse.params).length > 0
+            ? `
+  | Parameter    | Value                 |
+  | ------------ | --------------------- |
+  ${Object.entries(exampleResponse.params)
+      .map(([name, value]) => `| ${name} | ${value} |`)
+      .join("\n")}
+  `
+            : "";
+
+    return `
+  ### Example Response
+  
+  ${headersTable ? "#### Headers\n" + headersTable : ""}
+  
+  ${paramsTable ? "#### Parameters\n" + paramsTable : ""}
+  
+  ${
+      exampleResponse.reqBody
+          ? "#### Request Body\n" + "```json\n" + JSON.stringify(exampleResponse.reqBody, null, 2) + "\n```"
+          : ""
+  }
+  
+  #### Response Body
+  
+  \`\`\`json
+  ${JSON.stringify(exampleResponse.resBody, null, 2)}
+  \`\`\`
+  
+  #### Status
+  
+  ${exampleResponse.status}
+  `;
+}
+
+function keyValueToHeader(keyValues: KeyValue[]) {
+    let header: Header[] = [];
+    keyValues.forEach((keyValue) => {
+        if (keyValue.isChecked && keyValue.key.trim() !== "")
+            header.push({
+                name: keyValue.key,
+                value: keyValue.value,
+                description: "",
+            });
+    });
+    return header;
+}
+
+function keyValueToParams(keyValues: KeyValue[]) {
+    let params: Parameter[] = [];
+    keyValues.forEach((keyValue) => {
+        if (keyValue.key.trim() !== "")
+            params.push({
+                name: keyValue.isChecked ? keyValue.key : keyValue.key + " (Optional)",
+                type: String(typeof keyValue.value),
+                description: "",
+            });
+    });
+    return params;
+}
+
+function convertSavedResponse(savedResponses: ResponseObject[]) {
+    let responses: ExampleResponse[] = [];
+    savedResponses.forEach((data) => {
+        responses.push({
+            headers: data.requestData?.header,
+            params: data.requestData?.params,
+            reqBody: data.requestData?.bodyObj,
+            resBody: data.body,
+            status: data.responseStats,
+        });
+    });
+    return responses;
+}

@@ -63,6 +63,7 @@ Catest depends on the following external npm packages:
 -   Multiple Project View
 -   Request Folder Nesting for a more organized view and documentation generation.
 -   HTTPs, HTML export and styling
+-   Example template for different language.
 
 ## Contributing
 

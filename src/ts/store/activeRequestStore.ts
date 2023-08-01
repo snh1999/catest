@@ -67,15 +67,12 @@ const useActiveRequestStore = create<ActiveRequestState>()(
             },
 
             updateState: () => {
-                const activeTabInfo = useRequestTabStore.getState().getActiveTabInfo();
-                if (activeTabInfo.length == 1)
-                    set({
-                        ...activeTabInfo[0],
-                    });
+                set({
+                    ...useRequestTabStore.getState().getActiveTabInfo(),
+                });
             },
 
             getState: () => ({
-                id: -1,
                 requestBasicInfo: get().requestBasicInfo,
                 paramData: get().paramData,
                 headerData: get().headerData,

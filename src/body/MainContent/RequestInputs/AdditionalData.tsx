@@ -32,10 +32,10 @@ export default function AdditionalData() {
                 )}
             </Tabs>
             <TabPanel value={activeTab} index={0}>
-                <KeyValueInput rows={paramData} setRow={setParamData} />
+                <KeyValueInput rows={paramData} setRow={setParamData} isHeader={false} />
             </TabPanel>
             <TabPanel value={activeTab} index={1}>
-                <KeyValueInput rows={headerData} setRow={setHeaderData} />
+                <KeyValueInput rows={headerData} setRow={setHeaderData} isHeader={true} />
             </TabPanel>
             <TabPanel value={activeTab} index={2}>
                 <JSONInput />

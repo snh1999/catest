@@ -13,7 +13,8 @@ interface RequestTabState {
     deleteRequest: (id: number) => void;
     reorderRequest: (startIndex: number, endIndex: number) => void;
     updateInputData: (newInputData: RequestInputData) => void;
-    getActiveTabInfo: () => RequestInputData[];
+    getActiveTabInfo: () => RequestInputData;
+    getStateVariables: () => { title: RequestTab[]; info: RequestInputData[] };
 }
 
 const useRequestTabStore = create<RequestTabState>()(
@@ -41,18 +42,19 @@ const useRequestTabStore = create<RequestTabState>()(
                     }));
                 },
                 updateInputData: (newInputData: RequestInputData) => {
-                    console.log(get().inputData);
                     set((prevState) => ({
-                        inputData: prevState.inputData.map((data) =>
-                            data.id === get().requestTabs[get().activeTab].id ? { ...newInputData, id: data.id } : data
+                        inputData: prevState.inputData.map((data, index) =>
+                            index === get().requestTabs[get().activeTab].id ? newInputData : data
                         ),
                     }));
                 },
 
                 deleteRequest: (id: number) => {
                     set((prevState) => ({
-                        requestTabs: prevState.requestTabs.filter((req) => req.id !== id),
-                        inputData: prevState.inputData.filter((data) => data.id !== id),
+                        requestTabs: prevState.requestTabs
+                            .filter((req) => req.id !== id)
+                            .map((data) => (data.id < id ? data : { ...data, id: data.id - 1 })),
+                        inputData: prevState.inputData.filter((_, index) => index !== id),
                     }));
                 },
                 reorderRequest: (startIndex: number, endIndex: number) => {
@@ -60,12 +62,21 @@ const useRequestTabStore = create<RequestTabState>()(
                         const requestTabsCopy = [...prevState.requestTabs];
                         const [dragItem] = requestTabsCopy.splice(startIndex, 1);
                         requestTabsCopy.splice(endIndex, 0, dragItem);
+
                         return { requestTabs: requestTabsCopy };
                     });
                 },
 
                 getActiveTabInfo: () =>
-                    get().inputData.filter((data) => data.id === get().requestTabs[get().activeTab].id),
+                    // get().inputData.filter((data) => data.id === get().requestTabs[get().activeTab].id),
+                    get().inputData[get().requestTabs[get().activeTab].id],
+
+                getStateVariables: () => {
+                    return {
+                        title: get().requestTabs,
+                        info: get().inputData,
+                    };
+                },
             }),
             {
                 name: "requestStore",
