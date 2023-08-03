@@ -10,13 +10,16 @@ import SavedResponseViewer from "./SavedResponseViewer";
 import FormInput from "./AdditionalData/FormInput";
 
 export default function AdditionalData() {
-    const { paramData, setParamData, headerData, setHeaderData, savedResponses } = useActiveRequestStore((store) => ({
-        paramData: store.paramData,
-        setParamData: store.setParamData,
-        headerData: store.headerData,
-        setHeaderData: store.setHeaderData,
-        savedResponses: store.savedResponses,
-    }));
+    const { paramData, setParamData, headerData, setHeaderData, savedResponses, formData, setFormData } =
+        useActiveRequestStore((store) => ({
+            paramData: store.paramData,
+            setParamData: store.setParamData,
+            headerData: store.headerData,
+            setHeaderData: store.setHeaderData,
+            savedResponses: store.savedResponses,
+            formData: store.formData,
+            setFormData: store.setFormData,
+        }));
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -42,7 +45,7 @@ export default function AdditionalData() {
             </TabPanel>
 
             <TabPanel value={activeTab} index={3}>
-                <FormInput />
+                <FormInput rows={formData} setRow={setFormData} />
             </TabPanel>
             {savedResponses.length != 0 && (
                 <TabPanel value={activeTab} index={4}>

@@ -15,6 +15,7 @@ interface RequestTabState {
     updateInputData: (newInputData: RequestInputData) => void;
     getActiveTabInfo: () => RequestInputData;
     getStateVariables: () => { title: RequestTab[]; info: RequestInputData[] };
+    resetAll: () => void;
 }
 
 const useRequestTabStore = create<RequestTabState>()(
@@ -76,6 +77,13 @@ const useRequestTabStore = create<RequestTabState>()(
                         title: get().requestTabs,
                         info: get().inputData,
                     };
+                },
+                resetAll: () => {
+                    set({
+                        requestTabs: [],
+                        inputData: [],
+                        activeTab: 0,
+                    });
                 },
             }),
             {

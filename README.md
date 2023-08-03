@@ -6,26 +6,30 @@ Few words behind motivtion- The inspiration behind creating Catest came from the
 
 Behind the name - The name "Catest" originates from the combination of "CAT" (inspired by lazy and curious creatures) and "TEST" signifying the purpose of the application in a word.
 
-## Features
-
--   Manual API testing with the ability to include headers, query parameters, and request bodies.
--   Save responses for future reference and documentation purposes.
--   Persistence of application state, allowing for seamless continuation of testing sessions.
-
-### Features being tested/ being polished
-
--   Complete Testing for Markdown documentation export.
--   Drag-drop (sequence change) for Saved Response (Fixing the animation issue caused by dnd-kit)
--   Automated testing (Testing with Form fields)
--   Introduction of a new Light theme, replacing the default MUI theme.
--   Planned feature: Documentation generation using provided templates (Template validation yet to be implemented).
-
-## Usage
+## Demo
 
 ![create new request](images/1.png)
 ![send api call](images/2.png)
 ![send with request body](images/3.png)
-![saved response](images/4.png)
+![saved response](images/6.png)
+
+## Features
+
+-   Manual API testing with the ability to include headers, query parameters, and request bodies.
+-   Persistence of application state, allowing for seamless continuation of testing sessions.
+-   Automated Data generation (Testing with Form fields)
+    ![create form request](images/4.png)
+    ![create form request](images/5.png)
+-   Documentation Generator from fixed template.
+    ![Documentation 1](images/8.png)
+    ![Documentation 2](images/7.png)
+
+### Features being tested/ being polished
+
+-   Drag-drop (sequence change) for Saved Response (Fixing the animation issue caused by dnd-kit)
+-   Introduction of a new Light theme, replacing the default MUI theme.
+-   Planned feature: Documentation generation using provided templates (Template validation yet to be implemented).
+-   Documentation Generator with template (template format and parser) and Documentation parser from template
 
 ## Installation
 

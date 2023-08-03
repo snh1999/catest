@@ -22,11 +22,14 @@ function SideBar() {
 }
 
 function BottomButtons() {
-    const [open, setOpen] = useState(false);
+    const [openClear, setOpenClear] = useState(false);
+    const [openSave, setOpenSave] = useState(false);
     const [viewDoc, setViewDoc] = useState(false);
     const getState = useActiveRequestStore((store) => store.getState);
     const updateInputData = useRequestTabStore((store) => store.updateInputData);
     const getStateVariables = useRequestTabStore((store) => store.getStateVariables);
+    const resetAll = useRequestTabStore((store) => store.resetAll);
+
     const [documentation, setDocumentation] = useState("");
 
     function generateDocumentation() {
@@ -46,7 +49,10 @@ function BottomButtons() {
             <DocViewer open={viewDoc} setOpen={setViewDoc} documentation={documentation} />
             <BottomNavigation showLabels sx={{ position: "fixed", bottom: 0, width: `${drawerWidth}px` }}>
                 <BottomNavigationAction
-                    onClick={() => updateInputData(getState())}
+                    onClick={() => {
+                        updateInputData(getState());
+                        setOpenSave(true);
+                    }}
                     label="Save"
                     icon={<SaveIcon color="success" />}
                 />
@@ -56,18 +62,24 @@ function BottomButtons() {
                     icon={<FileDownloadIcon color="success" />}
                 />
                 <BottomNavigationAction
-                    onClick={() => setOpen(true)}
+                    onClick={() => setOpenClear(true)}
                     label="clear"
                     icon={<CleaningServicesIcon color="error" />}
                 />
             </BottomNavigation>
 
-            <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
-                <Alert severity="error" onClose={() => setOpen(false)}>
+            <Snackbar open={openClear} autoHideDuration={6000} onClose={() => setOpenClear(false)}>
+                <Alert severity="error" onClose={() => setOpenClear(false)}>
                     This Operation will Clear All Requests
-                    <Button color="error" size="small" onClick={() => {}}>
+                    <Button color="error" size="small" onClick={() => resetAll()}>
                         Ok
                     </Button>
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={openSave} autoHideDuration={3000} onClose={() => setOpenSave(false)}>
+                <Alert severity="success" onClose={() => setOpenSave(false)}>
+                    Saved Successfully
                 </Alert>
             </Snackbar>
         </>

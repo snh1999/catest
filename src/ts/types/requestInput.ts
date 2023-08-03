@@ -2,6 +2,7 @@ import { RequestBasic } from "./requesttypes";
 import { ResponseObject } from "./response";
 import { DEFAULT_REQUEST_BASIC } from "./requesttypes";
 import { KeyValue, DEFAULT_KEY_VALUE } from "./keyvalue";
+import { DEFAULT_INPUT_FORM, InputFormType } from "./FormInput";
 
 export type RequestInputData = {
     // id: number;
@@ -10,6 +11,7 @@ export type RequestInputData = {
     headerData: KeyValue[];
     requestBody: string;
     savedResponses: ResponseObject[];
+    formData: InputFormType[];
 };
 
 export const DEFAULT_REQUEST_INPUT = {
@@ -18,4 +20,5 @@ export const DEFAULT_REQUEST_INPUT = {
     headerData: [DEFAULT_KEY_VALUE],
     requestBody: "",
     savedResponses: [],
+    formData: [DEFAULT_INPUT_FORM],
 };

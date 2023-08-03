@@ -15,13 +15,13 @@ type RowProp = {
 function NewKeyValueRow(props: RowProp) {
     const { index, rows, setRow, isHeader } = props;
 
-    const [checked, setChecked] = useState(true);
-    const [key, setKey] = useState("");
+    const [isChecked, setChecked] = useState(rows[index].isChecked);
+    const [key, setKey] = useState(rows[index].key);
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(rows[index].value);
 
     function toggleChecked() {
-        setChecked(!checked);
+        setChecked(!isChecked);
     }
 
     function removeRow(deleteKey: number) {
@@ -32,11 +32,9 @@ function NewKeyValueRow(props: RowProp) {
         );
     }
 
-    function updateRow(updateKey: number, isKey: boolean, updatedValue: string) {
-        const updatedRow = [...rows]; // Create a new array
-        if (isKey) updatedRow[updateKey] = { ...updatedRow[updateKey], key: updatedValue };
-        else updatedRow[updateKey] = { ...updatedRow[updateKey], value: updatedValue };
-        setRow(updatedRow);
+    function updateRow() {
+        rows[index] = { isChecked, key, value };
+        setRow([...rows]);
     }
 
     useEffect(() => {
@@ -45,32 +43,40 @@ function NewKeyValueRow(props: RowProp) {
         setValue(rows[index].value);
     }, [rows]);
 
+    useEffect(() => {
+        updateRow();
+    }, [key, isChecked]);
+
     return (
         <ListItem key={index} disablePadding sx={{ paddingBottom: "10px" }}>
-            <Checkbox edge="end" onChange={(_) => toggleChecked()} checked={checked} />
+            <Checkbox value={isChecked} edge="end" onChange={(_) => toggleChecked()} checked={isChecked} />
             {!isHeader && (
                 <TextField
                     value={key}
                     placeholder="Key"
                     onChange={(event) => setKey(event.target.value)}
-                    onBlur={() => updateRow(index, true, key)}
+                    // onBlur={() => updateRow()}
                     sx={{ width: "50%", paddingRight: "10px", paddingLeft: "10px" }}
                     size="small"
                 />
             )}
             {isHeader && (
                 <Autocomplete
+                    value={key}
                     options={HeaderTypes}
                     sx={{ width: "50%" }}
+                    onChange={(_, newValue) => {
+                        if (typeof newValue === "string") setKey(newValue);
+                        else if (newValue) setKey(newValue.label);
+                    }}
                     groupBy={(options) => options.type}
                     freeSolo
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            value={key}
+                            // value={key}
                             placeholder="Header Type"
-                            onChange={(event) => setKey(event.target.value)}
-                            onBlur={() => updateRow(index, true, key)}
+                            // onBlur={() => updateRow()}
                             sx={{ width: "100%", paddingRight: "10px", paddingLeft: "10px" }}
                             size="small"
                         />
@@ -82,12 +88,12 @@ function NewKeyValueRow(props: RowProp) {
                 value={value}
                 placeholder="Value"
                 onChange={(event) => setValue(event.target.value)}
-                onBlur={() => updateRow(index, false, value)}
+                onBlur={() => updateRow()}
                 sx={{ width: "50%" }}
                 size="small"
             />
             <IconButton onClick={() => removeRow(index)}>
-                <DeleteIcon color="warning" />
+                <DeleteIcon color="error" />
             </IconButton>
         </ListItem>
     );

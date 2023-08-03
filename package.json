@@ -13,6 +13,7 @@
         "@codemirror/lang-json": "^6.0.1",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
+        "@faker-js/faker": "^8.0.2",
         "@formkit/auto-animate": "^0.7.0",
         "@mui/icons-material": "^5.14.1",
         "@mui/material": "^5.14.1",
