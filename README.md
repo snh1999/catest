@@ -8,21 +8,21 @@ Behind the name - The name "Catest" originates from the combination of "CAT" (in
 
 ## Demo
 
-![create new request](images/1.png)
-![send api call](images/2.png)
-![send with request body](images/3.png)
-![saved response](images/6.png)
+![create new request](public/1.png)
+![send api call](public/2.png)
+![send with request body](public/3.png)
+![saved response](public/6.png)
 
 ## Features
 
 -   Manual API testing with the ability to include headers, query parameters, and request bodies.
 -   Persistence of application state, allowing for seamless continuation of testing sessions.
 -   Automated Data generation (Testing with Form fields)
-    ![create form request](images/4.png)
-    ![create form request](images/5.png)
+    ![create form request](public/4.png)
+    ![create form request](public/5.png)
 -   Documentation Generator from fixed template.
-    ![Documentation 1](images/8.png)
-    ![Documentation 2](images/7.png)
+    ![Documentation 1](public/8.png)
+    ![Documentation 2](public/7.png)
 
 ### Features being tested/ being polished
 
