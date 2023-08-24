@@ -2,10 +2,9 @@ import { List } from "@mui/material";
 import useRequestTabStore from "../../../ts/store/requestTabStore";
 import TabItem from "./TabItem";
 
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
+// import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { DragDropContext, Draggable, DropResult, Droppable, DroppableProps } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
-import { Droppable, DroppableProps } from "react-beautiful-dnd";
 import useActiveRequestStore from "../../../ts/store/activeRequestStore";
 
 const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
@@ -37,7 +36,7 @@ function TabsList() {
 
     const updateState = useActiveRequestStore((store) => store.updateState);
 
-    const [parent] = useAutoAnimate();
+    // const [parent] = useAutoAnimate();
 
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return;
