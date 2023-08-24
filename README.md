@@ -29,7 +29,7 @@ Behind the name - The name "Catest" originates from the combination of "CAT" (in
 -   Drag-drop (sequence change) for Saved Response (Fixing the animation issue caused by dnd-kit)
 -   Introduction of a new Light theme, replacing the default MUI theme.
 -   Planned feature: Documentation generation using provided templates (Template validation yet to be implemented).
--   Documentation Generator with template (template format and parser) and Documentation parser from template
+-   Documentation parser from template
 
 ## Installation
 
@@ -56,12 +56,12 @@ Catest depends on the following external npm packages:
 -   zustand (version 4.3.9) - A simple state management tool used for implementing persistance.
 -   MUI ("^11.11") - To adhere to the Material Design system and utilize icons.
 -   codemirror (lang-json") - To display well-formatted JSON inputs.
--   react-beautiful-dnd (^13.1.1") - TO BE CHANGED, I already have functional replacement code supporting the drag-drop feature to integrate @dnd-kit, but there is some jitter animation(caused by sortable transform) while dragging. I will replace it (along with @formkit/auto-animate- "0.7") as soon as I figure the animation issue out.
--   tauri-plugin-sql(FUTURE) - This is more related to Tauri's Rust backend. It will be used for project storage and loading (Note: the current documentation/file parsing method is a bit slow).
+-   react-beautiful-dnd (^13.1.1") - **TO BE CHANGED**, I already have functional replacement code supporting the drag-drop feature to integrate @dnd-kit, but there is some jitter animation(caused by sortable transform) while dragging. I will replace it (along with @formkit/auto-animate- "0.7") as soon as I figure the animation issue out.
+-   tauri-plugin-sql(**FUTURE**) - This is more related to Tauri's Rust backend. It will be used for project storage and loading (Note: the current documentation/file parsing method is a bit slow).
 
 ## Planned Improvements
 
--   Undo operation functionality.
+-   Undo operation functionality(throughout the app).
 -   Separate settings Menu
 -   Responsive layout design for better usability across different devices.
 -   Multiple Project View
