@@ -3,9 +3,9 @@
 Catest aims to be a cross platform, simple and lightweight automated API testing tool/Documentation Generator. Created with Tauri and Reactjs for frontend
 
 #### Why
-The inspiration behind creating Catest came from the challenges of maintaining up-to-date tests for [bug2progress](https://github.com/snh1999/bug2progress),To simplify the process, the idea of building a straightforward automated API testing and documentation generator emerged.
+The inspiration behind creating Catest came from the challenges of maintaining up-to-date tests for [bug2progress](https://github.com/snh1999/bug2progress),To simplify the process, the idea of building a straightforward automated API testing and documentation generator came to light. Specially when the exisiting platforms didn't exactly have that functionality.
 
-Behind the name - The name "Catest" originates from the combination of "CAT" (inspired by lazy and curious creatures) and "TEST" signifying the purpose of the application in a word.
+Behind the name - The name "Catest" originates from the combination of "CAT" (inspired by lazy and curious creatures) and "TEST".
 
 ## Demo
 
