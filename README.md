@@ -46,9 +46,7 @@ follow the tauri documentation for building in [windows](https://tauri.app/v1/gu
 
 ### Releases
 
-To be added soon
-
-<!-- To download the application, please visit the releases page. You will find two options available: an AppImage and a Linux x86_64 binary. -->
+To download the application, please visit the releases page. All platforms are available: AppImage, `.deb` (linux), `.exe` (Windows) and `.dmg`(MacOS, not tested).
 
 ## Dependencies
 
